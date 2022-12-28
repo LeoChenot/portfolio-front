@@ -2,5 +2,12 @@
 @use "sass:color";
 
 .home {
-  
+  display: flex;
+  flex-direction: column;
+
+  .section {
+    min-height: calc(100vh - 5rem);
+    background-color: #888;
+
+  }
 }

@@ -19,6 +19,7 @@
     ],
     "rules": {
         "no-useless-escape": "off",
-        "brace-style": "off"
+        "brace-style": "off",
+        "react/no-unescaped-entities": "off"
     }
 }

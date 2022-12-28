@@ -2,5 +2,125 @@
 @use "sass:color";
 
 .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 2rem;
+  box-sizing: border-box;
+  height: 5rem;
+  background-color: #333;
+
+  position: sticky;
+  top: 0;
   
+  transition: height 200ms;
+
+  $header: &;
+  
+  &--sticky {
+    margin-bottom: 0rem;
+    height: 3.5rem;
+
+    #{$header}__left {
+      padding: 0.6rem 0;
+      transition: padding 200ms;
+    }
+  }
+
+
+  &__left {
+    height: 100%;
+    padding: 1.1rem 0;
+    box-sizing: border-box;
+    transition: padding 200ms;
+    
+    
+    &__logo {
+      display: flex;
+      height: 100%;
+      border-radius: 0.6rem;
+      overflow: hidden;
+
+      &__img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    &__nav {
+      display: flex;
+      align-items: center;
+      height: 100%;
+
+      color: #FFF;
+
+      &__list {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        column-gap: 1.5rem;
+
+        &__item {
+          display: flex;
+          align-items: center;
+          height: 100%;
+
+          &__link {
+            display: flex;
+            align-items: center;
+            height: 100%;
+
+            font-weight: bold;
+            transition: color 400ms;
+            background-color: transparent;
+            outline: none;
+            border: none;
+            color: inherit;
+            padding: 0;
+
+            position: relative;
+
+            &::after {
+              content: "";
+              position: absolute;
+              bottom: 0;
+              left: 50%;
+              width: 0;
+              height: 0.2rem;
+              background-color: #FFF;
+              transform: translateX(-50%);
+              transition: width 200ms;
+
+              // border-top-left-radius: 0.2rem;
+              // border-top-right-radius: 0.2rem;
+            }
+
+            &--isActive {
+              &::after {
+                width: 100%;
+              }
+            }
+
+            &:hover {
+              color: #CCC;
+              transition: color 200ms;
+            }
+
+            &:active {
+              color: #AAA;
+              transition: color 200ms;
+            }
+          }
+        }
+      }
+
+    }
+  }
 }
