@@ -4,10 +4,18 @@
 .home {
   display: flex;
   flex-direction: column;
+  padding: 3.5rem 0;
 
   .section {
+    display: flex;
+    flex-direction: column;
+    padding: 5rem 0;
+    box-sizing: border-box;
     min-height: calc(100vh - 5rem);
-    background-color: #888;
-
+    background-color: #FFF;
+    
+    &:nth-child(even) {
+      background: linear-gradient(#EEEEEE, #ffffff, #EEEEEE);
+    }
   }
 }

@@ -1,0 +1,294 @@
+@use "../../styles/vars.scss";
+@use "sass:color";
+
+#projects {
+  min-height: calc(100vh - 3.5rem);
+
+  .title {
+    align-self: center;
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+  }
+
+  .content {
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    &__projects {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+  
+      padding: 2rem;
+      box-sizing: border-box;
+  
+      gap: 2rem;
+  
+  
+  
+      &__project {
+        width: 20rem;
+        height: 25rem;
+        
+        &__inner {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          perspective: 1000px;
+  
+          &__content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+  
+            &:hover {
+              .content__projects__project__inner__content__back__content__section__content__warning__icon {
+                animation-play-state: running;
+              }
+  
+              .content__projects__project__inner__content__front,
+              .content__projects__project__inner__content__back {
+  
+                &::before {
+                  animation-play-state: running;
+                }
+              }
+              
+            }
+  
+            &--flipped {
+              transform: rotateY(180deg);
+            }
+    
+            &__front, &__back {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              width: 100%;
+              height: 100%;
+              transform: translate(-50%, -50%);
+              backface-visibility: hidden;
+              box-sizing: border-box;
+              overflow: hidden;
+              padding: 0.3rem;
+              border-radius: 1rem;
+  
+              &__content {
+                padding: 2rem 0;
+                box-sizing: border-box;
+                width: 100%;
+                height: 100%;
+                background-color: #FFF;
+                border-radius: 0.8rem;
+                overflow: hidden;
+              }
+              
+            }
+    
+            &__front {
+  
+              &__content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+  
+                &__name {
+                  font-size: 1.6rem;
+                  font-weight: bold;
+                }
+  
+                &__img {
+                  width: 90%;
+                  box-shadow: 0 0 0.4rem #BBB;
+                }
+  
+                &__btn {
+                  border: none;
+                  outline: none;
+                  background-color: #666;
+                  box-shadow: 0 0 0.4rem #BBB;
+                  color: #FFF;
+                  padding: 0.6rem 1rem;
+                  border-radius: 0.6rem;
+                  cursor: pointer;
+                }
+  
+              }
+  
+              &::before {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                height: 150%;
+                aspect-ratio: 1;
+                transform: translate(-50%, -50%) rotate(0deg);
+                background: conic-gradient(transparent 0deg 0deg, var(--firstColor) 15deg 180deg, transparent 180deg 180deg, var(--secondColor) 195deg 360deg);
+                z-index: -1;
+                animation: borderRotation 8s linear infinite forwards;
+                animation-play-state: paused;
+              }
+            }
+            
+            &__back {
+              transform: translate(-50%, -50%) rotateY(180deg);
+  
+              &__content {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                padding: 2rem;
+  
+                &__description {
+                  letter-spacing: 0.05rem;
+                  height: 9rem;
+                  overflow-y: auto;
+  
+                  &__link {
+                    text-decoration: underline;
+                    color: #999;
+                  }
+                }
+  
+                &__btn {
+                  border: none;
+                  outline: none;
+                  background-color: #666;
+                  box-shadow: 0 0 0.4rem #BBB;
+                  color: #FFF;
+                  padding: 0.6rem 1rem;
+                  border-radius: 0.6rem;
+                  cursor: pointer;
+                }
+  
+                &__section {
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  row-gap: 0.6rem;
+                  position: relative;
+  
+  
+                  &__name {
+                    letter-spacing: 0.02rem;
+                  }
+  
+                  &__content {
+                    display: flex;
+                    column-gap: 1rem;
+    
+                    &__link {
+                      color: #FFF;
+                      padding: 0.6rem 1rem;
+                      border-radius: 0.6rem;
+                      display: flex;
+                      column-gap: 0.4rem;
+                      align-items: center;
+  
+                      &--demo {
+                        background-color: rgb(0, 154, 0);
+                      }
+  
+                      &--github {
+                        background-color: #24292F;
+                      }
+                      
+                    }
+  
+                    &__warning {
+                      display: flex;
+                      position: absolute;
+                      top: 50%;
+                      right: -0.6rem;
+                      transform: translate(100%, -50%);
+                      cursor: pointer;
+                      
+                      &:hover {
+                        .content__projects__project__inner__content__back__content__section__content__warning__icon {
+                          animation-play-state: paused;
+                        }
+      
+                        ~ .content__projects__project__inner__content__back__content__section__content__warning__message {
+                          display: block;
+                        }
+                      }
+      
+                      &__icon {
+                        color: #DC3545;
+                        font-size: 1.8rem;
+                        animation: warningIcon 1.2s alternate infinite;
+                        animation-play-state: paused;
+                      }
+      
+                      &__message {
+                        display: none;
+                        position: absolute;
+                        bottom: -0.5rem;
+                        left: 50%;
+                        width: 15rem;
+                        overflow: hidden;
+      
+                        background-color: #DC3545;
+                        color: #FFF;
+                        letter-spacing: 0.02rem;
+                        line-height: 1.25rem;
+                        transform: translate(-50%, 100%);
+                        padding: 0.5rem;
+                        z-index: 2;
+                      }
+                    }
+                  }
+                }
+              }
+  
+              &::before {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                height: 150%;
+                aspect-ratio: 1;
+                transform: translate(-50%, -50%) rotate(0deg);
+                background: conic-gradient(var(--secondColor) 0deg 165deg, transparent 180deg 180deg, var(--firstColor) 180deg 345deg, transparent 360deg 360deg);
+                z-index: -1;
+                animation: borderRotation 8s linear infinite forwards reverse;
+                animation-play-state: paused;
+              }
+            }
+          }
+  
+        }
+  
+      }
+    }
+  }
+}
+
+@keyframes borderRotation {
+  0% {
+    transform: translate(-50%, -50%) rotate(225deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(585deg);
+  }
+}
+
+@keyframes warningIcon {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
