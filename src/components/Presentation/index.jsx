@@ -1,6 +1,8 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
-import React, { useContext, useEffect, useRef } from 'react';
+import React, {
+  useContext, useEffect, useRef, useState,
+} from 'react';
 import { useSelector } from 'react-redux';
 
 import { ScrollContext } from '../ScrollProvider';
@@ -13,7 +15,9 @@ import Competences from '../../assets/Competences.png';
 import './style.scss';
 
 function Presentation() {
-  const scrollY = useContext(ScrollContext);
+  const scrollYContext = useContext(ScrollContext);
+  const [scrollY, setScrollY] = useState(undefined);
+
   const sectionOfPresentationRef = useRef();
   const imgRef = useRef();
 
@@ -85,13 +89,24 @@ function Presentation() {
     }
   };
 
+  // Ici, comme le scrollYContext arrive avant que le composant Presentation soit chargé
+  // Je le met donc dans un state local
   useEffect(() => {
-    // Si headerRef est défini
-    // ET si la largeur de la fenêtre est supérieur à 775
-    if (headerRef && window.innerWidth > 775) {
-      // Si currentUrl est égale à '/home#presentation' ou à '/home'
-      if (currentUrl === '/home#presentation' || currentUrl === '/home') {
-        onScroll();
+    if (scrollYContext) {
+      setScrollY(scrollYContext);
+    }
+  }, [scrollYContext]);
+
+  // Comme ça, lorsque le state local sera défini, le composant sera chargé
+  useEffect(() => {
+    if (scrollY) {
+      // Si headerRef est défini
+      // ET si la largeur de la fenêtre est supérieur à 775
+      if (headerRef && window.innerWidth > 775) {
+        // Si currentUrl est égale à '/home#presentation' ou à '/home'
+        if (currentUrl === '/home#presentation' || currentUrl === '/home') {
+          onScroll();
+        }
       }
     }
   }, [scrollY]);

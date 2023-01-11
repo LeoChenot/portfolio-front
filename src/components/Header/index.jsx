@@ -1,4 +1,6 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, {
+  useContext, useEffect, useRef, useState,
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 // import PropTypes from 'prop-types';
@@ -9,7 +11,9 @@ import { ScrollContext } from '../ScrollProvider';
 import './style.scss';
 
 function Header() {
-  const scrollY = useContext(ScrollContext);
+  const scrollYContext = useContext(ScrollContext);
+  const [scrollY, setScrollY] = useState(undefined);
+
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -134,8 +138,19 @@ function Header() {
     }
   }, []);
 
+  // Ici, comme le scrollYContext arrive avant que le composant Header soit chargé
+  // Je le met donc dans un state local
   useEffect(() => {
-    onScroll();
+    if (scrollYContext) {
+      setScrollY(scrollYContext);
+    }
+  }, [scrollYContext]);
+
+  // Comme ça, lorsque le state local sera défini, le composant sera chargé
+  useEffect(() => {
+    if (scrollY) {
+      onScroll();
+    }
   }, [scrollY]);
 
   return (
