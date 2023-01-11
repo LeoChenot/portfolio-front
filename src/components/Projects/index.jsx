@@ -10,7 +10,7 @@ function Projects() {
   const sectionOfProjects = useRef();
 
   const resetAllCards = (event) => {
-    if (event.target.id === 'projects' || event.target.classList.contains('content__projects')) {
+    if (event.target.id === 'projects' || event.target.classList.contains('content') || event.target.classList.contains('content__projects')) {
       const flipCards = document.querySelectorAll('.content__projects__project');
       flipCards.forEach((flipCard) => {
         const flipCardInner = flipCard.querySelector('.content__projects__project__inner__content');

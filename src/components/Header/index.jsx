@@ -1,13 +1,15 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+// import PropTypes from 'prop-types';
 import { setStateGlobal } from '../../actions/global';
 import logo from '../../assets/logo.svg';
+import { ScrollContext } from '../ScrollProvider';
 
-// import PropTypes from 'prop-types';
 import './style.scss';
 
 function Header() {
+  const scrollY = useContext(ScrollContext);
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -16,11 +18,8 @@ function Header() {
 
   const headerRef = useRef();
   const navRef = useRef();
-  // Ref du state currentUrl, pour pouvoir y accéder dans la fonction de l'event listener onScroll
-  const currentUrlStateRef = useRef(currentUrl);
 
-  const getCurrentSection = (event) => {
-    const { scrollY } = event.path[1];
+  const getCurrentSection = () => {
     const scrollYWithHeader = scrollY + headerRef.current.offsetHeight;
 
     const homeElement = document.querySelector('.home');
@@ -40,9 +39,7 @@ function Header() {
     return currentSectionId;
   };
 
-  const onScroll = (event) => {
-    const { scrollY } = event.path[1];
-
+  const onScroll = () => {
     // Je change la classe du header pour le rendre plus petit lorsqu'on scroll
     if (scrollY >= headerRef.current.offsetHeight) {
       if (!headerRef.current.classList.contains('header--sticky')) {
@@ -54,14 +51,14 @@ function Header() {
     }
 
     // Je change l'url si scrollY est à l'intérieur d'une section
-    const value = getCurrentSection(event);
+    const value = getCurrentSection();
 
     if (value) {
-      if (currentUrlStateRef.current !== `/home#${value.id}`) {
+      if (currentUrl !== `/home#${value.id}`) {
         navigate(`/home#${value.id}`);
       }
     }
-    else if (currentUrlStateRef.current !== '/home') {
+    else if (currentUrl !== '/home') {
       navigate('/home');
     }
   };
@@ -89,13 +86,6 @@ function Header() {
       });
     }
   };
-
-  useEffect(() => {
-    // Lorsque le state currentUrl change...
-
-    // Je met à jour la propriété currentUrlStateRef.current
-    currentUrlStateRef.current = currentUrl;
-  }, [currentUrl]);
 
   useEffect(() => {
     // Lorsque l'url change...
@@ -129,8 +119,8 @@ function Header() {
   useEffect(() => {
     // Au chargement de la page...
 
-    // J'ajoute un event listener de type scroll
-    window.addEventListener('scroll', onScroll);
+    // Je stock le headerRef dans un state
+    dispatch(setStateGlobal('headerRef', headerRef));
 
     // Si l'url contient un hash, je scroll jusqu'à l'élément correspondant
     if (location.hash) {
@@ -143,6 +133,10 @@ function Header() {
       headerRef.current.classList.remove('header--sticky');
     }
   }, []);
+
+  useEffect(() => {
+    onScroll();
+  }, [scrollY]);
 
   return (
     <header className="header header--sticky" ref={headerRef}>
@@ -192,16 +186,6 @@ function Header() {
                 onClick={() => scrollToElementById('#contact')}
               >
                 Contact
-              </button>
-            </li>
-            <li className="header__right__nav__list__item">
-              <button
-                type="button"
-                className="header__right__nav__list__item__link"
-                data-url="/home#test"
-                onClick={() => scrollToElementById('#test')}
-              >
-                Test
               </button>
             </li>
           </ul>

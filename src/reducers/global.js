@@ -2,6 +2,7 @@ import { SET_STATE_GLOBAL } from '../actions/global';
 
 const initialState = {
   currentUrl: '',
+  headerRef: undefined,
 };
 
 const globalReducer = (state = initialState, action = {}) => {

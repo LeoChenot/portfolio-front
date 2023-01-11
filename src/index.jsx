@@ -9,12 +9,15 @@ import './styles/index.scss';
 
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
+import { ScrollProvider } from './components/ScrollProvider';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-      <App />
+      <ScrollProvider>
+        <App />
+      </ScrollProvider>
     </BrowserRouter>
   </Provider>,
 );
