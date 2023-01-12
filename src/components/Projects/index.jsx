@@ -59,7 +59,7 @@ function Projects() {
                 <div className="content__projects__project__inner__content__front">
                   <div className="content__projects__project__inner__content__front__content">
                     <h3 className="content__projects__project__inner__content__front__content__name">Collectio</h3>
-                    <img className="content__projects__project__inner__content__front__content__img" src="https://raw.githubusercontent.com/LeoChenot/LeoChenot/main/img/Collectio.png" alt="" />
+                    <img className="content__projects__project__inner__content__front__content__img" src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/LeoChenot/LeoChenot/main/img/Collectio.png&h=137" alt="" />
                     <button className="content__projects__project__inner__content__front__content__btn" type="button">
                       En savoir plus...
                     </button>
@@ -131,7 +131,7 @@ function Projects() {
                 <div className="content__projects__project__inner__content__front">
                   <div className="content__projects__project__inner__content__front__content">
                     <h3 className="content__projects__project__inner__content__front__content__name">Timers</h3>
-                    <img className="content__projects__project__inner__content__front__content__img" src="https://raw.githubusercontent.com/LeoChenot/LeoChenot/main/img/Timers2.png" alt="" />
+                    <img className="content__projects__project__inner__content__front__content__img" src="https://images.weserv.nl/?url=https://raw.githubusercontent.com/LeoChenot/LeoChenot/main/img/Timers2.png&h=137" alt="" />
                     <button className="content__projects__project__inner__content__front__content__btn" type="button">
                       En savoir plus...
                     </button>
@@ -202,7 +202,7 @@ function Projects() {
                 <div className="content__projects__project__inner__content__front">
                   <div className="content__projects__project__inner__content__front__content">
                     <h3 className="content__projects__project__inner__content__front__content__name">Sneakers</h3>
-                    <img className="content__projects__project__inner__content__front__content__img" src="https://cdn.discordapp.com/attachments/657342275210444828/1058016741961244772/integration-e-commerce.netlify.app_.png" alt="" />
+                    <img className="content__projects__project__inner__content__front__content__img" src="https://images.weserv.nl/?url=https://cdn.discordapp.com/attachments/657342275210444828/1058016741961244772/integration-e-commerce.netlify.app_.png&h=137" alt="" />
                     <button className="content__projects__project__inner__content__front__content__btn" type="button">
                       En savoir plus...
                     </button>

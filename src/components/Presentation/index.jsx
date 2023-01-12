@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable max-len */
 import React, {
   useContext, useEffect, useRef, useState,
@@ -19,7 +18,6 @@ function Presentation() {
   const [scrollY, setScrollY] = useState(undefined);
 
   const sectionOfPresentationRef = useRef();
-  const imgRef = useRef();
 
   const { currentUrl, headerRef } = useSelector((state) => state.globalReducer);
 
@@ -27,57 +25,68 @@ function Presentation() {
     const scrollYWithHeader = scrollY + headerRef.current.offsetHeight;
 
     const middleScrollY = (window.innerHeight + headerRef.current.offsetHeight) / 2;
+    const cursorCoord = scrollY + middleScrollY;
 
     const boxes = document.querySelectorAll('.content__box');
-    boxes.forEach((box) => {
+
+    const activeBox = [...boxes].find((box) => {
       const bar = box.querySelector('.content__box__main__bar');
-      const cursor = box.querySelector('.content__box__main__bar__cursor');
 
       const heightBar = bar.offsetHeight;
       const topBar = bar.offsetTop;
       const bottomBar = topBar + heightBar;
-      const cursorCoord = scrollY + middleScrollY;
 
-      // Si le curseur est dans la barre...
       if (cursorCoord >= topBar && cursorCoord <= bottomBar) {
-        // On ajoute la classe content__box--active
-        if (!box.classList.contains('content__box--active')) {
-          box.classList.add('content__box--active');
-        }
-
-        // Et on place le curseur à la bonne position
-        cursor.style.top = `${cursorCoord - topBar}px`;
+        return box;
       }
-      // Sinon...
-      else {
-        // On enlève la classe content__box--active
+
+      return null;
+    });
+
+    // Pour chaque box...
+    boxes.forEach((box) => {
+      const bar = box.querySelector('.content__box__main__bar');
+
+      const heightBar = bar.offsetHeight;
+      const topBar = bar.offsetTop;
+      const bottomBar = topBar + heightBar;
+
+      // Si la box n'est pas active...
+      if (box !== activeBox) {
+        // Et qu'elle a la classe active...
         if (box.classList.contains('content__box--active')) {
+          // Je lui enlève la classe active
           box.classList.remove('content__box--active');
         }
 
-        // Si le curseur est plus près du haut de la barre que du bas...
-        if (Math.abs(cursorCoord - topBar) < Math.abs(cursorCoord - bottomBar)) {
-          // On le place en haut
-          cursor.style.top = '0px';
-        }
-        // Sinon...
-        else {
-          // On le place en bas
-          cursor.style.top = `${heightBar}px`;
+        // Et que le curseur a dépassé la bar...
+        if (cursorCoord > bottomBar) {
+          if (!box.classList.contains('content__box--exceeded')) {
+            // Je lui ajoute la classe exceeded
+            box.classList.add('content__box--exceeded');
+          }
         }
       }
-
-      // Si la box est dépassée, on ajoute la classe content__box--exceeded
-      if (cursorCoord > bottomBar) {
-        if (!box.classList.contains('content__box--exceeded')) {
-          box.classList.add('content__box--exceeded');
-        }
-      }
+      // Si la box est active et qu'elle a la classe exceeded
       else if (box.classList.contains('content__box--exceeded')) {
+        // Je lui supprime la classe exceeded
         box.classList.remove('content__box--exceeded');
       }
     });
 
+    // Si il y a une box active...
+    if (activeBox) {
+      // J'ajoute la classe active à la box active
+      if (!activeBox.classList.contains('content__box--active')) {
+        activeBox.classList.add('content__box--active');
+      }
+    }
+
+    //
+    //
+    //
+    //
+    //
     // Lorsque l'on arrive au début de la section de présentation, on ajoute la classe section--active
     if (scrollYWithHeader < sectionOfPresentationRef.current.offsetTop) {
       if (sectionOfPresentationRef.current.classList.contains('section--active')) {
@@ -116,7 +125,7 @@ function Presentation() {
       <div className="content">
         <div className="content__section">
           <div className="content__section__container">
-            <img className="content__section__container__img" src="https://avatars.githubusercontent.com/u/88596531?v=4&s=350" alt="" ref={imgRef} />
+            <img className="content__section__container__img" src="https://avatars.githubusercontent.com/u/88596531?v=4&s=350" alt="" />
           </div>
           <div className="content__section__content">
             <h3 className="content__section__content__name">Léo Chenot</h3>

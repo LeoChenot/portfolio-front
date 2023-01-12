@@ -171,18 +171,18 @@
           position: relative;
 
           &__cursor {
-            position: absolute;
-            top: 0;
+            position: fixed;
+            top: calc((100% - 3.5rem) / 2);
             left: 50%;
             width: 0.7rem;
             height: 0.7rem;
             border-radius: 50%;
             background-color: #FFF;
             border: 0.2rem solid #444;
-            transform: translate(-50%, -50%);
+            transform: translate(-50%, calc(-50% + 3.5rem));
             z-index: 2;
             opacity: 0;
-            transition: background-color 100ms, border 0ms, opacity 0ms;
+            transition: background-color 400ms, border 0ms, opacity 0ms;
           }
 
           &::before {
@@ -215,9 +215,12 @@
         }
       }
 
-      &--first {
+      &--first:not(.content__box--active) {
         .content__box__main__bar {
           &__cursor {
+            position: absolute;
+            top: 0;
+            transform: translate(-50%, -50%);
             opacity: 1;
           }
         }
@@ -244,6 +247,9 @@
       &--last.content__box--exceeded {
         .content__box__main__bar {
           &__cursor {
+            position: absolute;
+            top: 100%;
+            transform: translate(-50%, -50%);
             background-color: #444;
             border: 0 solid #444;
             transition: background-color 200ms, border 400ms, opacity 400ms;
