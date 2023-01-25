@@ -2,5 +2,91 @@
 @use "sass:color";
 
 .footer {
-  
+
+  &__information {
+    background-color: #555;
+    min-height: 23rem;
+    padding: 3.5rem 2rem;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 15rem;
+    flex-wrap: wrap;
+    
+    &__column {
+      display: flex;
+      flex-direction: column;
+      row-gap: 2rem;
+
+      max-width: 15rem;
+
+
+      color: #FFF;
+
+      &__title {
+        width: fit-content;
+        font-size: 1.15rem;
+
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 0.6rem 0;
+
+        position: relative;
+
+
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          transform: translate(0, 100%);
+          height: 0.15rem;
+          width: 50%;
+          background-color: #FFF;
+        }
+      }
+
+      &__content {
+        font-size: 1.1rem;
+        letter-spacing: 0.01rem;
+        line-height: 1.6rem;
+
+        &__links {
+          display: flex;
+          flex-direction: column;
+          row-gap: 0.8rem;
+
+          &__link {
+            transition: all 400ms;
+
+            &:hover {
+              color: #CCC;
+              transition: all 200ms;
+            }
+
+            &:active {
+              color: #999;
+              transition: all 200ms;
+            }
+
+          }
+        }
+      }
+
+    }
+
+
+
+
+  }
+
+  &__copyright {
+    background-color: #333;
+    color: #FFF;
+    padding: 1.4rem;
+    text-align: center;
+    font-size: 1.1rem;
+  }
 }
