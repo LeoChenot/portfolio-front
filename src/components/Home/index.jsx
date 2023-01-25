@@ -1,4 +1,5 @@
 import React from 'react';
+import Contact from '../Contact';
 import Presentation from '../Presentation';
 import Projects from '../Projects';
 
@@ -10,7 +11,7 @@ function Home() {
     <div className="home">
       <Presentation />
       <Projects />
-      <div id="contact" className="section">contact</div>
+      <Contact />
     </div>
   );
 }

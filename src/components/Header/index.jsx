@@ -29,18 +29,42 @@ function Header() {
     const homeElement = document.querySelector('.home');
     const sectionNodeList = homeElement.querySelectorAll('.section');
 
-    const currentSectionId = [...sectionNodeList].find((section) => {
-      const sectionTop = section.offsetTop;
-      const sectionBottom = sectionTop + section.offsetHeight;
+    let currentSection;
 
-      if (scrollYWithHeader >= sectionTop && scrollYWithHeader < sectionBottom) {
-        return section;
+    // Si je suis en bas de la page...
+    if (scrollY + window.innerHeight === document.documentElement.scrollHeight) {
+      // je défini currentSection à la dernière section
+      currentSection = [...sectionNodeList][sectionNodeList.length - 1];
+    }
+    // Sinon...
+    else {
+      currentSection = [...sectionNodeList].find((section) => {
+        const sectionTop = section.offsetTop;
+        const sectionBottom = sectionTop + section.offsetHeight;
+
+        if (scrollYWithHeader >= sectionTop && scrollYWithHeader < sectionBottom) {
+          return section;
+        }
+
+        return null;
+      });
+    }
+
+    return currentSection;
+  };
+
+  const setUrlByCurrentSection = () => {
+    // Je change l'url si scrollY est à l'intérieur d'une section
+    const currentSection = getCurrentSection();
+
+    if (currentSection) {
+      if (currentUrl !== `/home#${currentSection.id}`) {
+        navigate(`/home#${currentSection.id}`);
       }
-
-      return null;
-    });
-
-    return currentSectionId;
+    }
+    else if (currentUrl !== '/home') {
+      navigate('/home');
+    }
   };
 
   const onScroll = () => {
@@ -54,17 +78,7 @@ function Header() {
       headerRef.current.classList.remove('header--sticky');
     }
 
-    // Je change l'url si scrollY est à l'intérieur d'une section
-    const value = getCurrentSection();
-
-    if (value) {
-      if (currentUrl !== `/home#${value.id}`) {
-        navigate(`/home#${value.id}`);
-      }
-    }
-    else if (currentUrl !== '/home') {
-      navigate('/home');
-    }
+    setUrlByCurrentSection();
   };
 
   const scrollToElementById = (id) => {
