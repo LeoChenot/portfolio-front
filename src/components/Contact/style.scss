@@ -219,9 +219,12 @@
     .content {
       &__socials {
         &__social {
-          max-width: none;
-          max-width: 100%;
-          padding: 0.4rem 0.6rem;
+          &__link {
+            width: 100%;
+            padding: 0.4rem 0.6rem;
+  
+            transition: all 400ms ease-out;
+          }
         }
       }
     }
