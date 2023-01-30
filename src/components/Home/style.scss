@@ -15,7 +15,8 @@
     background-color: #FFF;
     
     &:nth-child(even) {
-      background: linear-gradient(#EEEEEE, #ffffff, #EEEEEE);
+      border-top: 0.2rem solid #444;
+      border-bottom: 0.2rem solid #444;
     }
   }
 }

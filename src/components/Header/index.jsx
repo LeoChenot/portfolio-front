@@ -18,7 +18,7 @@ function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { currentUrl } = useSelector((state) => state.globalReducer);
+  const { currentUrl, currentTitle } = useSelector((state) => state.globalReducer);
 
   const headerRef = useRef();
   const navRef = useRef();
@@ -130,6 +130,25 @@ function Header() {
       }
     });
 
+    // Je vais cherche le currentTitle
+    const title = [...navRef.current.children].find((item) => {
+      const button = item.querySelector('.header__right__nav__list__item__link');
+      const attribute = button.getAttribute('data-url').split('#')[1];
+
+      if (attribute) {
+        if (`#${attribute}` === location.hash) {
+          return item;
+        }
+      }
+      else if (location.hash === '') {
+        return item;
+      }
+
+      return undefined;
+    });
+
+    dispatch(setStateGlobal('currentTitle', title.querySelector('.header__right__nav__list__item__link').textContent));
+
     // On met à jour le state currentUrl avec l'url actuelle
     dispatch(setStateGlobal('currentUrl', location.pathname + location.hash));
   }, [location]);
@@ -166,6 +185,10 @@ function Header() {
       onScroll();
     }
   }, [scrollY]);
+
+  useEffect(() => {
+    document.title = `Léo Chenot - ${currentTitle}`;
+  }, [currentTitle]);
 
   return (
     <header className="header header--sticky" ref={headerRef}>
