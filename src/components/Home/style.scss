@@ -19,4 +19,76 @@
       border-bottom: 0.2rem solid #444;
     }
   }
+
+  &__scrollTopButton {
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+    background-color: #444;
+    border: none;
+    outline: none;
+    height: 3rem;
+    width: 3rem;
+    border-radius: 0.6rem;
+    font-size: 2rem;
+
+    border: 0.15rem solid #333;
+
+    animation: showScrollToTopButton 1s forwards;
+
+    cursor: pointer;
+
+    &__hidden {
+      animation: hideScrollToTopButton 1s forwards;
+    }
+
+    @keyframes hideScrollToTopButton {
+      0% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(5rem);
+      }
+    }
+
+    @keyframes showScrollToTopButton {
+      0% {
+        opacity: 0;
+        transform: translateY(5rem);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    
+
+    &:hover {
+      .home__scrollTopButton__icon {
+        transform: scale(1.2);
+        transition: transform 200ms;
+      }
+    }
+
+    &:active {
+      .home__scrollTopButton__icon {
+        transform: scale(1.4);
+        transition: transform 200ms;
+      }
+    }
+
+    &__icon {
+      filter: brightness(0) invert(1);
+      transition: transform 400ms;
+    }
+  }
 }
