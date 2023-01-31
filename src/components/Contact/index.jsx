@@ -11,12 +11,13 @@ function Contact() {
   const copyUsernameInClipboard = async (event) => {
     const socialElement = event.target.closest('.content__socials__social');
     const usernameElement = socialElement.querySelector('.content__socials__social__link__username');
+    let messageError = '';
 
     // Je copie le username dans le presse-papier
     try {
       navigator.clipboard.writeText(usernameElement.textContent);
     } catch (error) {
-      console.log('Erreur donc utilisation de la méthode (deprecated) : document.execCommand(\'copy\')');
+      messageError = 'Utilisation de la méthode (deprecated) : document.execCommand(\'copy\')';
       const selection = window.getSelection();
       const range = document.createRange();
       range.selectNodeContents(usernameElement);
@@ -31,6 +32,10 @@ function Contact() {
     setTimeout(() => {
       messageRef.current.classList.remove('content__socials__social__message--show');
     }, 1500);
+
+    if (messageError !== '') {
+      throw new Error(messageError);
+    }
   };
 
   return (

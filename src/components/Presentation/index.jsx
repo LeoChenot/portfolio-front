@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 
 import { ScrollContext } from '../ScrollProvider';
 
-import Moi from '../../assets/Moi.jpg';
+import WhoIAm from '../../assets/WhoIAm.jpg';
 import Parcours from '../../assets/Parcours.jpg';
 import Competences from '../../assets/Competences.png';
 
@@ -125,11 +125,11 @@ function Presentation() {
       <div className="content">
         <div className="content__section">
           <div className="content__section__container">
-            <img className="content__section__container__img" src="https://avatars.githubusercontent.com/u/88596531?v=4&s=350" alt="" />
+            <img className="content__section__container__img" src="https://avatars.githubusercontent.com/u/88596531?v=4&s=350" alt="profile de Léo Chenot" />
           </div>
           <div className="content__section__content">
             <h3 className="content__section__content__name">Léo Chenot</h3>
-            <h2 className="content__section__content__job">Développeur FullStack JS</h2>
+            <h1 className="content__section__content__job">Développeur FullStack JS</h1>
           </div>
         </div>
 
@@ -139,7 +139,7 @@ function Presentation() {
           </div>
           <div className="content__box__main">
             <div className="content__box__main__part content__box__main__part--left">
-              <img className="content__box__main__part__img" src={Moi} alt="" />
+              <img className="content__box__main__part__img" src={WhoIAm} alt="silhouette d'un homme" />
             </div>
             <div className="content__box__main__bar">
               <div className="content__box__main__bar__cursor" />
@@ -183,7 +183,7 @@ function Presentation() {
               <div className="content__box__main__bar__cursor" />
             </div>
             <div className="content__box__main__part content__box__main__part--right">
-              <img className="content__box__main__part__img" src={Parcours} alt="" />
+              <img className="content__box__main__part__img" src={Parcours} alt="homme au sommet d'une petite montagne fixant une montagne encore plus haute" />
             </div>
           </div>
         </div>
@@ -194,7 +194,7 @@ function Presentation() {
           </div>
           <div className="content__box__main">
             <div className="content__box__main__part content__box__main__part--left">
-              <img className="content__box__main__part__img" src={Competences} alt="" />
+              <img className="content__box__main__part__img" src={Competences} alt="logo de chacune des technologies ou langages que je maîtrise : HTML, CSS, JavaScript, React, Redux, Sass, NodeJS, PostgreSQL, ExpressJS, Axios, Sequelize et JSON Web Token" />
             </div>
             <div className="content__box__main__bar">
               <div className="content__box__main__bar__cursor" />

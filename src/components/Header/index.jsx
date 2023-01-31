@@ -94,7 +94,7 @@ function Header() {
         });
       }
       else {
-        console.log(`Aucune section du site ne comporte l\'id : ${id.slice(1, id.length)}`);
+        throw new Error(`Aucune section du site ne comporte l\'id : ${id.slice(1, id.length)}`);
       }
     }
     // Sinon, je scroll en haut de la page
@@ -194,7 +194,7 @@ function Header() {
     <header className="header header--sticky" ref={headerRef}>
       <div className="header__left">
         <Link className="header__left__logo" to="/home">
-          <img className="header__left__logo__img" src={logo} alt="logo" />
+          <img className="header__left__logo__img" src={logo} alt="le logo du portfolio de Léo Chenot" />
         </Link>
       </div>
       <div className="header__right">
