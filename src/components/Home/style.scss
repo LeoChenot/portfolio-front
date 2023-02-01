@@ -11,37 +11,27 @@
     flex-direction: column;
     padding: 5rem 0;
     box-sizing: border-box;
-    min-height: calc(100vh - 5rem);
+    // Hauteur de la fenêtre - hauteur du header réduit + hauteur de la séparation entre les sections
+    min-height: calc(100vh - 3.5rem + 0.2rem);
     background-color: #FFF;
-    
-    &:nth-child(even) {
-      // border-top: 0.2rem solid #444;
-      // border-bottom: 0.2rem solid #444;
-      position: relative;
-      &::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 50%;
-        height: 0.2rem;
-        background-color: #444;
-        min-width: 20rem;
-        width: 80%;
-        max-width: 40rem;
-        transform: translateX(-50%);
-      }
+    position: relative;
 
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      height: 0.2rem;
+      background-color: #444;
+      min-width: 20rem;
+      width: 80%;
+      max-width: 40rem;
+      transform: translateX(-50%);
+    }
+
+    &:last-of-type {
       &::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        height: 0.2rem;
-        background-color: #444;
-        min-width: 20rem;
-        width: 80%;
-        max-width: 40rem;
-        transform: translateX(-50%);
+        display: none;
       }
     }
   }

@@ -22,10 +22,11 @@ function Presentation() {
   const { currentUrl, headerRef } = useSelector((state) => state.globalReducer);
 
   const onScroll = () => {
+    const scrollYWithoutHeader = scrollY - headerRef.current.offsetHeight;
     const scrollYWithHeader = scrollY + headerRef.current.offsetHeight;
 
-    const middleScrollY = (window.innerHeight + headerRef.current.offsetHeight) / 2;
-    const cursorCoord = scrollY + middleScrollY;
+    const middleScrollY = (window.innerHeight - headerRef.current.offsetHeight) / 2;
+    const cursorCoord = scrollYWithoutHeader + middleScrollY;
 
     const boxes = document.querySelectorAll('.content__box');
 

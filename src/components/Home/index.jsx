@@ -2,9 +2,11 @@ import React, {
   useEffect, useContext, useState, useRef,
 } from 'react';
 import { IoMdArrowUp } from 'react-icons/io';
+import { Outlet } from 'react-router-dom';
 import Contact from '../Contact';
 import Presentation from '../Presentation';
 import Projects from '../Projects';
+import Resume from '../Resume';
 
 import { ScrollContext } from '../ScrollProvider';
 
@@ -46,10 +48,12 @@ function Home() {
     <div className="home">
       <Presentation />
       <Projects />
+      <Resume />
       <Contact />
       <button className="home__scrollTopButton home__scrollTopButton__hidden" ref={scrollToTopButtonRef} type="button" onClick={scrollToTop}>
         <IoMdArrowUp className="home__scrollTopButton__icon" />
       </button>
+      <Outlet />
     </div>
   );
 }

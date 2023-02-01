@@ -1,0 +1,51 @@
+@use "../../styles/vars.scss";
+@use "sass:color";
+
+#resume {
+  .title {
+    align-self: center;
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 4rem;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+
+    &__resume {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      row-gap: 2rem;
+      
+      &__content {
+        display: flex;
+        cursor: pointer;
+        user-select: none;
+        
+        &__pdf {
+          pointer-events: none;
+          margin: -3.4px -6px -7.5px -6px;
+          clip-path: inset(3.4px 6px 7.5px 6px);
+        }
+      }
+
+      &__actions {
+        display: flex;
+        column-gap: 1.5rem;
+
+        &__link {
+          background-color: #444;
+          border: none;
+          color: #FFF;
+          padding: 0.6rem 1.6rem;
+          border-radius: 0.6rem;
+          cursor: pointer;
+        }
+      }
+      
+    }
+  }
+  
+}

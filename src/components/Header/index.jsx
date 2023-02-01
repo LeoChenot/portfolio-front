@@ -234,6 +234,16 @@ function Header() {
               <button
                 type="button"
                 className="header__right__nav__list__item__link"
+                data-url="/home#resume"
+                onClick={() => scrollToElementById('#resume')}
+              >
+                Mon CV
+              </button>
+            </li>
+            <li className="header__right__nav__list__item">
+              <button
+                type="button"
+                className="header__right__nav__list__item__link"
                 data-url="/home#contact"
                 onClick={() => scrollToElementById('#contact')}
               >
