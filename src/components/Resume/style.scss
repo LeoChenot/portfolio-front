@@ -23,17 +23,19 @@
         display: flex;
         cursor: pointer;
         user-select: none;
+        padding: 0 2rem;
         
-        &__pdf {
-          pointer-events: none;
-          margin: -3.4px -6px -7.5px -6px;
-          clip-path: inset(3.4px 6px 7.5px 6px);
+        &__img {
+          width: 100%;
+          max-width: 25rem;
         }
       }
 
       &__actions {
         display: flex;
-        column-gap: 1.5rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1.5rem;
 
         &__link {
           background-color: #444;
@@ -42,6 +44,7 @@
           padding: 0.6rem 1.6rem;
           border-radius: 0.6rem;
           cursor: pointer;
+          text-align: center;
         }
       }
       

@@ -16,13 +16,7 @@ function Resume() {
       <div className="content">
         <div className="content__resume">
           <div className="content__resume__content" onClick={openResume}>
-            <embed
-              className="content__resume__content__pdf"
-              src="https://drive.google.com/u/1/uc?id=108XrOrQp_6h3SzeLxHjbVAQ6rA1YdGux&export?format=pdf#toolbar=0&zoom=50"
-              type="application/pdf"
-              width="407px"
-              height="570px"
-            />
+            <img className="content__resume__content__img" src="https://drive.google.com/u/1/uc?id=1JJZhKO4bGITcG7YRGHl4ZjCmrpWDX5Ck&export?format=png" alt="mon CV" />
           </div>
           <div className="content__resume__actions">
             <a href="https://drive.google.com/u/1/uc?id=108XrOrQp_6h3SzeLxHjbVAQ6rA1YdGux&export?format=pdf" target="_blank" className="content__resume__actions__link" rel="noreferrer">Voir en détails</a>
