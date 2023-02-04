@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable max-len */
 import React, {
   useContext, useEffect, useRef, useState,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 // import PropTypes from 'prop-types';
 import { setStateGlobal } from '../../actions/global';
 import logo from '../../assets/logo.svg';
@@ -11,11 +13,14 @@ import { ScrollContext } from '../ScrollProvider';
 import './style.scss';
 
 function Header() {
-  const scrollYContext = useContext(ScrollContext);
-  const [scrollY, setScrollY] = useState(undefined);
-
   const location = useLocation();
-  const navigate = useNavigate();
+  const scrollYContext = useContext(ScrollContext);
+  const [scrollY, setScrollY] = useState(0);
+  const [destination, setDestination] = useState(undefined);
+
+  // Pour avoir accès au state ScrollY dans mon useEffect(() => {}, [location])
+  const scrollYRef = useRef();
+
   const dispatch = useDispatch();
 
   const { currentUrl, currentTitle } = useSelector((state) => state.globalReducer);
@@ -23,29 +28,34 @@ function Header() {
   const headerRef = useRef();
   const navRef = useRef();
 
-  const getCurrentSection = () => {
+  const getCurrentSectionByScrollY = () => {
+    // Je défini la valeur de scrollY en ajoutant la hauteur du header
     const scrollYWithHeader = scrollY + headerRef.current.offsetHeight;
 
-    const homeElement = document.querySelector('.home');
-    const sectionNodeList = homeElement.querySelectorAll('.section');
+    // Je récupère la sectionList
+    const sectionList = [...document.querySelectorAll('.section')];
 
+    // Je déclare la currentSection sans valeur
     let currentSection;
 
-    // Si je suis en bas de la page...
+    // Si nous somme en bas de la page...
     if (scrollY + window.innerHeight === document.documentElement.scrollHeight) {
-      // je défini currentSection à la dernière section
-      currentSection = [...sectionNodeList][sectionNodeList.length - 1];
+      // Je défini la currentSection à la dernière section
+      currentSection = sectionList[sectionList.length - 1];
     }
     // Sinon...
     else {
-      currentSection = [...sectionNodeList].find((section) => {
+      currentSection = sectionList.find((section) => {
         const sectionTop = section.offsetTop;
         const sectionBottom = sectionTop + section.offsetHeight;
 
+        // Si scrollYWithHeader se situe entre le le haut et le bas d'une section
         if (scrollYWithHeader >= sectionTop && scrollYWithHeader < sectionBottom) {
+          // Je défini currentSection à cette section
           return section;
         }
 
+        // Sinon je retourne rien
         return null;
       });
     }
@@ -53,138 +63,167 @@ function Header() {
     return currentSection;
   };
 
-  const setUrlByCurrentSection = () => {
-    // Je change l'url si scrollY est à l'intérieur d'une section
-    const currentSection = getCurrentSection();
-
-    if (currentSection) {
-      if (currentUrl !== `/home#${currentSection.id}`) {
-        navigate(`/home#${currentSection.id}`);
-      }
-    }
-    else if (currentUrl !== '/home') {
-      navigate('/home');
-    }
-  };
-
-  const onScroll = () => {
-    // Je change la classe du header pour le rendre plus petit lorsqu'on scroll
+  const changeHeaderHeight = () => {
+    // Si le scrollY est supérieur ou égale à la hauteur du header et qu'il ne possède pas la classe header--sticky...
     if (scrollY >= headerRef.current.offsetHeight) {
       if (!headerRef.current.classList.contains('header--sticky')) {
+        // J'ajoute la classe header--sticky
         headerRef.current.classList.add('header--sticky');
       }
     }
+    // Sinon..
     else if (headerRef.current.classList.contains('header--sticky')) {
+      // J'enlève la classe header--sticky
       headerRef.current.classList.remove('header--sticky');
     }
-
-    setUrlByCurrentSection();
   };
 
-  const scrollToElementById = (id) => {
-    // Si id est défini, je scroll jusqu'à l'élément correspondant
-    if (id) {
-      const element = document.querySelector(id);
-
-      if (element) {
-        const rect = element.getBoundingClientRect();
-
-        window.scrollTo({
-          top: window.scrollY + rect.y - headerRef.current.offsetHeight,
-        });
-      }
-      else {
-        throw new Error(`Aucune section du site ne comporte l\'id : ${id.slice(1, id.length)}`);
-      }
-    }
-    // Sinon, je scroll en haut de la page
-    else {
-      window.scrollTo({
-        top: 0,
-      });
-    }
+  const updateScrollYRef = () => {
+    // Je met à jour le scrollYRef pour y avoir accès dans les useEffect
+    scrollYRef.current = scrollY;
   };
 
-  useEffect(() => {
-    // Lorsque l'url change...
-
-    // Je met à jour la classe isActive sur chaque item de la nav
-    [...navRef.current.children].forEach((item) => {
-      // Je selectionne le lien
-      const linkElement = item.children[0];
-
-      // Je récupère le hash à partir de l'url stockée dans l'attribut data-url
-      let hash = linkElement.getAttribute('data-url').split('#')[1];
-      // Si le hash est défini, on ajoute le caractère # devant, pour correspondre à location.hash
-      // Sinon, on met une chaine de caractère vide, pour correspondre à location.hash
-      hash = !hash ? hash = '' : `#${hash}`;
-
-      // On enlève la classe isActive de tous les items
-      if (linkElement.classList.contains('header__right__nav__list__item__link--isActive')) {
-        linkElement.classList.remove('header__right__nav__list__item__link--isActive');
-      }
-
-      // Puis on ajoute la classe isActive à l'item correspondant à l'url en utilisant le hash
-      if (location.hash === hash) {
-        linkElement.classList.add('header__right__nav__list__item__link--isActive');
-      }
-    });
-
-    // Je vais cherche le currentTitle
-    const title = [...navRef.current.children].find((item) => {
-      const button = item.querySelector('.header__right__nav__list__item__link');
-      const attribute = button.getAttribute('data-url').split('#')[1];
-
-      if (attribute) {
-        if (`#${attribute}` === location.hash) {
-          return item;
+  const updateWindowHistory = () => {
+    const currentSectionByScrollY = getCurrentSectionByScrollY();
+    let currentUrlTemp = window.location.pathname;
+    if (currentUrlTemp === '/home') {
+      if (currentSectionByScrollY) {
+        if (currentUrl !== `/home#${currentSectionByScrollY.id}`) {
+          window.history.pushState({}, '', `/home#${currentSectionByScrollY.id}`);
         }
+
+        currentUrlTemp += `#${currentSectionByScrollY.id}`;
       }
-      else if (location.hash === '') {
-        return item;
+      else if (currentUrl !== '/home') {
+        window.history.pushState({}, '', '/home');
+      }
+    }
+    return currentUrlTemp;
+  };
+
+  const updateActiveNavLink = (currentUrlTemp) => {
+    if (currentUrlTemp) {
+      const currentLink = document.querySelector(`.header__right__nav__list__item__link[href="${currentUrlTemp}"]`);
+
+      const lastLink = document.querySelector('.header__right__nav__list__item__link--isActive');
+      if (lastLink && lastLink.classList.contains('header__right__nav__list__item__link--isActive')) {
+        lastLink.classList.remove('header__right__nav__list__item__link--isActive');
       }
 
-      return undefined;
-    });
+      if (!currentLink.classList.contains('header__right__nav__list__item__link--isActive')) {
+        currentLink.classList.add('header__right__nav__list__item__link--isActive');
+      }
+    }
+  };
 
-    dispatch(setStateGlobal('currentTitle', title.querySelector('.header__right__nav__list__item__link').textContent));
-
-    // On met à jour le state currentUrl avec l'url actuelle
-    dispatch(setStateGlobal('currentUrl', location.pathname + location.hash));
-  }, [location]);
-
-  useEffect(() => {
-    // Au chargement de la page...
-
-    // Je stock le headerRef dans un state
-    dispatch(setStateGlobal('headerRef', headerRef));
-
-    // Si l'url contient un hash, je scroll jusqu'à l'élément correspondant
-    if (location.hash) {
-      scrollToElementById(location.hash);
+  const changeTitle = () => {
+    // Je vais cherche le currentTitle
+    let title = document.querySelector('.header__right__nav__list__item__link--isActive')?.textContent;
+    if (!title || title === 'Accueil') {
+      title = 'Développeur Web passionné et toujours prêt à coder';
     }
 
-    // Si scrollY est inférieur à la hauteur du header, je retire la classe header--sticky
-    // Ce qui rend le header plus grand
-    if (window.scrollY < headerRef.current.offsetHeight) {
-      headerRef.current.classList.remove('header--sticky');
-    }
-  }, []);
+    dispatch(setStateGlobal('currentTitle', title));
+  };
 
-  // Ici, comme le scrollYContext arrive avant que le composant Header soit chargé
-  // Je le met donc dans un state local
+  const updateURL = () => {
+    const currentUrlTemp = updateWindowHistory();
+    updateActiveNavLink(currentUrlTemp);
+    changeTitle();
+  };
+
+  // Lorsque le scrollYContext change...
   useEffect(() => {
+    // S'il est défini...
     if (scrollYContext) {
+      // Je met à jour la state local scrolllY
       setScrollY(scrollYContext);
     }
   }, [scrollYContext]);
 
-  // Comme ça, lorsque le state local sera défini, le composant sera chargé
+  // Lorsque location change...
   useEffect(() => {
+    // Si le pathname est égale à '/home'...
+    if (location.pathname === '/home') {
+      // Petite marge d'erreur
+      if (scrollYRef.current > 5) {
+        window.scrollTo({
+          top: scrollYRef.current,
+          behavior: 'instant',
+        });
+      }
+      if (location.hash !== '') {
+        // Je récupère le destinationId
+        const destinationId = location.hash.split('#')[1];
+
+        // Si le destinationId est défini...
+        if (destinationId) {
+          // Je récupère la destinationSection
+          const destinationSectionTemp = [...document.querySelectorAll('.section')].find((section) => {
+            if (section.id === destinationId) {
+              return section;
+            }
+            return null;
+          });
+
+          // Si la section à été trouvé...
+          if (destinationSectionTemp) {
+            const destinationSectionTempRect = destinationSectionTemp.getBoundingClientRect();
+            window.scrollTo({
+              top: scrollYRef.current - headerRef.current.offsetHeight + destinationSectionTempRect.top,
+            });
+          }
+          else {
+            // eslint-disable-next-line no-console
+            console.error(`La section "${destinationId}" n'a pas été trouvée.`);
+          }
+          setDestination(destinationSectionTemp);
+        }
+      }
+      // Sinon...
+      else {
+        // Cela veut dire que l'utilisateur veut retourner à l'accueil donc je le TP en haut de la page
+        window.scrollTo({
+          top: 0,
+        });
+      }
+    }
+    // Sinon...
+    else {
+      // On repart en haut de la page
+      window.scrollTo({
+        top: 0,
+        behavior: 'instant',
+      });
+    }
+    changeHeaderHeight();
+    updateURL();
+    dispatch(setStateGlobal('currentUrl', window.location.pathname + window.location.hash));
+  }, [location]);
+
+  // Lorsque je scroll...
+  useEffect(() => {
+    // Si scrollY est défini...
     if (scrollY) {
-      onScroll();
+      if (window.location.pathname === '/home') {
+        updateURL();
+        dispatch(setStateGlobal('currentUrl', window.location.pathname + window.location.hash));
+      }
+      changeHeaderHeight();
+      updateScrollYRef();
     }
   }, [scrollY]);
+
+  useEffect(() => {
+    // Je stock le headerRef dans un state
+    dispatch(setStateGlobal('headerRef', headerRef));
+
+    updateScrollYRef();
+    changeHeaderHeight();
+    updateURL();
+
+    dispatch(setStateGlobal('currentUrl', window.location.pathname + window.location.hash));
+  }, []);
 
   useEffect(() => {
     document.title = `Léo Chenot - ${currentTitle}`;
@@ -201,54 +240,44 @@ function Header() {
         <nav className="header__right__nav">
           <ul className="header__right__nav__list" ref={navRef}>
             <li className="header__right__nav__list__item">
-              <button
-                type="button"
+              <Link
                 className="header__right__nav__list__item__link"
-                data-url="/home"
-                onClick={() => scrollToElementById()}
+                to="/home"
               >
                 Accueil
-              </button>
+              </Link>
             </li>
             <li className="header__right__nav__list__item">
-              <button
-                type="button"
+              <Link
                 className="header__right__nav__list__item__link"
-                data-url="/home#presentation"
-                onClick={() => scrollToElementById('#presentation')}
+                to="/home#presentation"
               >
                 Présentation
-              </button>
+              </Link>
             </li>
             <li className="header__right__nav__list__item">
-              <button
-                type="button"
+              <Link
                 className="header__right__nav__list__item__link"
-                data-url="/home#projects"
-                onClick={() => scrollToElementById('#projects')}
+                to="/home#projects"
               >
                 Mes projets
-              </button>
+              </Link>
             </li>
             <li className="header__right__nav__list__item">
-              <button
-                type="button"
+              <Link
                 className="header__right__nav__list__item__link"
-                data-url="/home#resume"
-                onClick={() => scrollToElementById('#resume')}
+                to="/home#resume"
               >
                 Mon CV
-              </button>
+              </Link>
             </li>
             <li className="header__right__nav__list__item">
-              <button
-                type="button"
+              <Link
                 className="header__right__nav__list__item__link"
-                data-url="/home#contact"
-                onClick={() => scrollToElementById('#contact')}
+                to="/home#contact"
               >
                 Contact
-              </button>
+              </Link>
             </li>
           </ul>
         </nav>
