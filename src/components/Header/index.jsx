@@ -110,7 +110,7 @@ function Header() {
         lastLink.classList.remove('header__right__nav__list__item__link--isActive');
       }
 
-      if (!currentLink.classList.contains('header__right__nav__list__item__link--isActive')) {
+      if (currentLink && !currentLink.classList.contains('header__right__nav__list__item__link--isActive')) {
         currentLink.classList.add('header__right__nav__list__item__link--isActive');
       }
     }
