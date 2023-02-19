@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import React, { useEffect, useRef } from 'react';
 
-import { IoIosWarning, IoLogoGithub } from 'react-icons/io';
+import { IoLogoGithub } from 'react-icons/io';
 
 // import PropTypes from 'prop-types';
 import './style.scss';
@@ -83,13 +83,13 @@ function Projects() {
                         >
                           Démo en ligne
                         </a>
-                        <div className="content__projects__project__inner__content__back__content__section__content__warning">
+                        {/* <div className="content__projects__project__inner__content__back__content__section__content__warning">
                           <IoIosWarning className="content__projects__project__inner__content__back__content__section__content__warning__icon" />
                         </div>
                         <div className="content__projects__project__inner__content__back__content__section__content__warning__message">
                           Avec l'arrêt des offres gratuites d'hébergement chez Heroku, la partie back-end du site ne fonctionne plus pour le moment...
                           (Création de compte, connexion utilisateur, etc.)
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                     <div className="content__projects__project__inner__content__back__content__section">
@@ -154,13 +154,13 @@ function Projects() {
                         >
                           Démo en ligne
                         </a>
-                        <div className="content__projects__project__inner__content__back__content__section__content__warning">
+                        {/* <div className="content__projects__project__inner__content__back__content__section__content__warning">
                           <IoIosWarning className="content__projects__project__inner__content__back__content__section__content__warning__icon" />
                         </div>
                         <div className="content__projects__project__inner__content__back__content__section__content__warning__message">
                           Avec l'arrêt des offres gratuites d'hébergement chez Heroku, la partie back-end du site ne fonctionne plus pour le moment...
                           (Création de compte, connexion utilisateur, etc.)
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                     <div className="content__projects__project__inner__content__back__content__section">
